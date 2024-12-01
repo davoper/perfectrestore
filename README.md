@@ -24,3 +24,30 @@ The script has a pre and post delay of 15 seconds. Be close to your router to he
 
 ## Documentation
 [https://jcutrer.com/howto/networking/mikrotik/perfectrestore-script](https://jcutrer.com/howto/networking/mikrotik/perfectrestore-script)
+
+
+## Additional notes
+In case there are certificates present, which are not part of the backup script, to import them modify import script to load certificates before the other commands.
+
+First export existing certificates using commands (use your own passphrase):
+
+```
+/certificate export-certificate ca-certificate export-passphrase=password123456
+/certificate export-certificate server-certificate export-passphrase=password123456
+/certificate export-certificate client1-certificate export-passphrase=password123456
+```
+
+Place exported .crt and .key filed in RouterOS root directory and add the following to top of the backup script to be imported before all of the other commands.
+\
+(also note that we do not wish to trust client certificates so set trusted=no for them)
+
+```
+:delay 15s
+/certificate import file-name=cert_export_ca-certificate.crt name="ca-certificate" passphrase=""
+/certificate import file-name=cert_export_ca-certificate.key name="ca-certificate" passphrase=password123456
+/certificate import file-name=cert_export_server-certificate.crt name="server-certificate" passphrase=""
+/certificate import file-name=cert_export_server-certificate.key name="server-certificate" passphrase=password123456
+/certificate import file-name=cert_export_client1-certificate.crt name="client1-certificate" passphrase=""
+/certificate import file-name=cert_export_client1-certificate.key name="client1-certificate" passphrase=password123456
+/certificate set [find name=client1-certificate] trusted=no
+```

@@ -8,7 +8,7 @@
  
 {
  
-:local targetfile "flash/backup.rsc"   
+:local targetfile "backup.rsc"
  
 # Wait for interfaces to initialize
 :delay 15s
@@ -19,7 +19,7 @@
 "];
  
 # Setup temporary logging to disk
-/system logging action add disk-file-count=1 disk-file-name=flash/perfectrestore.log disk-lines-per-file=4096 name=perfectrestore target=disk
+/system logging action add disk-file-count=1 disk-file-name=perfectrestore.log disk-lines-per-file=4096 name=perfectrestore target=disk
 /system logging add action=perfectrestore topics=system,info
 /system logging add action=perfectrestore topics=script,info
 /system logging add action=perfectrestore topics=warning
